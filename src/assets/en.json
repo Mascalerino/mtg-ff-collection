@@ -1,0 +1,44 @@
+{
+  "appTitle": "MTG FINAL FANTASY - Collection",
+
+  "totalCards": "Total cards in set",
+  "cardsOwned": "Cards owned",
+  "progress": "Progress",
+  "estimatedValue": "Estimated collection value",
+  "summaryNote": "(Cardmarket prices via Scryfall, only when data is available)",
+
+  "loadingCards": "Loading cards...",
+  "loadingError": "Error loading cards from Scryfall.",
+  "importError": "Error importing file",
+
+  "export": "Export collection (JSON)",
+  "import": "Import collection (JSON)",
+
+  "search": "Search",
+  "searchPlaceholder": "Card name...",
+  "rarity": "Rarity",
+  "ownership": "Ownership",
+  "printType": "Print Type",
+
+  "all": "All",
+  "owned": "Owned only",
+  "missing": "Missing only",
+  "foilOwned": "Owned foils only",
+  "wanted": "Wanted only",
+
+  "hasFoil": "Foil only",
+  "hasNonFoil": "Nonfoil only",
+
+  "normalCopies": "Normal copies",
+  "foilCopies": "Foil copies",
+  "noNonfoil": "No nonfoil version",
+  "noFoil": "No foil version",
+
+  "priceNormal": "Normal",
+  "priceFoil": "Foil",
+
+  "noImage": "No image",
+  "viewOnCardmarketTitle": "View this card on Cardmarket",
+
+  "languageLabel": "Idioma / Language:"
+}
