@@ -1,15 +1,15 @@
 <div class="app-container">
   <header class="header">
     <div class="header-top">
-      <h1>{{ t('appTitle') }}</h1>
+      <h1>MTG FINAL FANTASY</h1>
 
       <!-- Selector de idioma -->
       <div class="lang-switcher">
         <label>
-          <span>{{ t('languageLabel') }}</span>
+          <span>Idioma / Language:</span>
           <select [(ngModel)]="language" (ngModelChange)="changeLanguage($event)">
-            <option value="es">ES</option>
-            <option value="en">EN</option>
+            <option value="es">Español</option>
+            <option value="en">English</option>
           </select>
         </label>
       </div>
