@@ -1,12 +1,23 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Información sobre una carta en la colección del usuario.
+ */
 export interface OwnedCardInfo {
+  /** ID único de la carta */
   cardId: string;
+  /** Cantidad de copias normales (no foil) */
   normalQty: number;
+  /** Cantidad de copias foil */
   foilQty: number;
-  wanted?: boolean; // carta marcada como deseada
+  /** Indica si la carta está marcada como deseada en la wishlist */
+  wanted?: boolean;
 }
 
+/**
+ * Servicio para gestionar la colección de cartas del usuario.
+ * Guarda y recupera datos de localStorage, incluyendo cantidades y wishlist.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -14,6 +25,11 @@ export class CollectionService {
   private readonly STORAGE_KEY = 'ff-mtg-collection';
   private cache: OwnedCardInfo[] | null = null;
 
+  /**
+   * Carga la colección desde localStorage.
+   * Utiliza caché para evitar parsear JSON múltiples veces.
+   * @returns Array con la información de todas las cartas en la colección
+   */
   private loadFromStorage(): OwnedCardInfo[] {
     if (this.cache) {
       return this.cache;
@@ -23,19 +39,39 @@ export class CollectionService {
     return this.cache;
   }
 
+  /**
+   * Guarda la colección en localStorage y actualiza la caché.
+   * @param data - Datos de la colección a guardar
+   */
   private saveToStorage(data: OwnedCardInfo[]): void {
     this.cache = data;
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
   }
 
+  /**
+   * Obtiene toda la colección.
+   * @returns Array con todas las cartas en la colección
+   */
   getAll(): OwnedCardInfo[] {
     return this.loadFromStorage();
   }
 
+  /**
+   * Obtiene la información de una carta específica de la colección.
+   * @param cardId - ID de la carta a buscar
+   * @returns Información de la carta o undefined si no está en la colección
+   */
   getCard(cardId: string): OwnedCardInfo | undefined {
     return this.loadFromStorage().find((c) => c.cardId === cardId);
   }
 
+  /**
+   * Actualiza las cantidades (normal y foil) de una carta.
+   * Si las cantidades son 0 y no está en la wishlist, elimina la carta de la colección.
+   * @param cardId - ID de la carta
+   * @param normalQty - Cantidad de copias normales
+   * @param foilQty - Cantidad de copias foil
+   */
   setCardQuantities(cardId: string, normalQty: number, foilQty: number): void {
     const collection = this.loadFromStorage();
     const existing = collection.find((c) => c.cardId === cardId);
@@ -59,7 +95,7 @@ export class CollectionService {
       return;
     }
 
-    // Si no existe y no hay copias, no la añadimos (a no ser que se marque como deseada, que se hace en toggleWanted)
+    // Si no existe y no hay copias, no la añadimos
     if (n === 0 && f === 0) {
       return;
     }
@@ -75,18 +111,40 @@ export class CollectionService {
     this.saveToStorage(collection);
   }
 
+  /**
+   * Obtiene la cantidad de copias normales de una carta.
+   * @param cardId - ID de la carta
+   * @returns Cantidad de copias normales (0 si no está en la colección)
+   */
   getNormalQty(cardId: string): number {
     return this.getCard(cardId)?.normalQty ?? 0;
   }
 
+  /**
+   * Obtiene la cantidad de copias foil de una carta.
+   * @param cardId - ID de la carta
+   * @returns Cantidad de copias foil (0 si no está en la colección)
+   */
   getFoilQty(cardId: string): number {
     return this.getCard(cardId)?.foilQty ?? 0;
   }
 
+  /**
+   * Verifica si una carta está marcada como deseada en la wishlist.
+   * @param cardId - ID de la carta
+   * @returns true si está en la wishlist, false en caso contrario
+   */
   isWanted(cardId: string): boolean {
     return !!this.getCard(cardId)?.wanted;
   }
 
+  /**
+   * Alterna el estado de wishlist de una carta.
+   * Si la carta no existe en la colección, la crea con wanted=true.
+   * Si existe, invierte su estado wanted.
+   * Si queda con wanted=false y sin copias, la elimina de la colección.
+   * @param cardId - ID de la carta
+   */
   toggleWanted(cardId: string): void {
     const collection = this.loadFromStorage();
     let existing = collection.find((c) => c.cardId === cardId);
@@ -117,8 +175,11 @@ export class CollectionService {
   }
 
   /**
-   * Reemplaza toda la colección por la que viene de un JSON importado.
-   * Conserva el campo "wanted" si existe.
+   * Reemplaza toda la colección por datos importados.
+   * Valida y limpia los datos antes de guardarlos.
+   * Conserva el campo "wanted" si existe en los datos importados.
+   * @param data - Array con los datos de la colección a importar
+   * @throws Error si los datos no son un array válido
    */
   replaceAll(data: OwnedCardInfo[]): void {
     if (!Array.isArray(data)) {
