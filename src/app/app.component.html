@@ -3,21 +3,36 @@
     <div class="header-top">
       <h1>MTG FINAL FANTASY</h1>
 
-      <!-- Selector de idioma -->
-      <div class="lang-switcher">
-        <label>
-          <span>Idioma / Language:</span>
-          <select [(ngModel)]="language" (ngModelChange)="changeLanguage($event)">
-            <option value="es">Español</option>
-            <option value="en">English</option>
-          </select>
-        </label>
+      <div class="header-controls">
+        <!-- Selector de set -->
+        <div class="set-selector">
+          <label>
+            <span>{{ t('setLabel') }}</span>
+            <select [(ngModel)]="setType" (ngModelChange)="onSetTypeChange($event)">
+              <option value="complete">{{ t('setComplete') }}</option>
+              <option value="unique">{{ t('setUnique') }}</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Selector de idioma -->
+        <div class="lang-switcher">
+          <label>
+            <span>{{ t('languageLabel') }}</span>
+            <select [(ngModel)]="language" (ngModelChange)="changeLanguage($event)">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+        </div>
       </div>
     </div>
 
     <div class="summary" *ngIf="!loading && !errorKey">
       <p>{{ t('totalCards') }}: <strong>{{ totalCards }}</strong></p>
       <p>{{ t('cardsOwned') }}: <strong>{{ ownedCards }}</strong></p>
+      <p>{{ t('uniqueCards') }}: <strong>{{ uniqueOwnedCards }}</strong></p>
+      <p>{{ t('repeatedCards') }}: <strong>{{ repeatedCards }}</strong></p>
       <p>
         {{ t('progress') }}:
         <strong>{{ completionPercentage | number: '1.0-1' }}%</strong>
@@ -29,6 +44,45 @@
           {{ t('summaryNote') }}
         </span>
       </p>
+    </div>
+
+    <!-- Estadísticas por rareza -->
+    <div class="summary rarity-summary" *ngIf="!loading && !errorKey">
+      <p class="rarity-title"><strong>{{ t('rarityStats') }}</strong></p>
+      
+      <div class="rarity-stats-grid">
+        <!-- Common -->
+        <div class="rarity-stat">
+          <p class="rarity-name">{{ t('common') }}:</p>
+          <p>{{ t('cardsOwned') }}: <strong>{{ getRarityOwnedCards('common') }}/{{ getRarityTotalCards('common') }}</strong></p>
+          <p>{{ t('repeatedCards') }}: <strong>{{ getRarityRepeatedCards('common') }}</strong></p>
+          <p>{{ t('estimatedValue') }}: <strong>{{ getRarityValue('common') | number: '1.2-2' }} €</strong></p>
+        </div>
+        
+        <!-- Uncommon -->
+        <div class="rarity-stat">
+          <p class="rarity-name">{{ t('uncommon') }}:</p>
+          <p>{{ t('cardsOwned') }}: <strong>{{ getRarityOwnedCards('uncommon') }}/{{ getRarityTotalCards('uncommon') }}</strong></p>
+          <p>{{ t('repeatedCards') }}: <strong>{{ getRarityRepeatedCards('uncommon') }}</strong></p>
+          <p>{{ t('estimatedValue') }}: <strong>{{ getRarityValue('uncommon') | number: '1.2-2' }} €</strong></p>
+        </div>
+        
+        <!-- Rare -->
+        <div class="rarity-stat">
+          <p class="rarity-name">{{ t('rare') }}:</p>
+          <p>{{ t('cardsOwned') }}: <strong>{{ getRarityOwnedCards('rare') }}/{{ getRarityTotalCards('rare') }}</strong></p>
+          <p>{{ t('repeatedCards') }}: <strong>{{ getRarityRepeatedCards('rare') }}</strong></p>
+          <p>{{ t('estimatedValue') }}: <strong>{{ getRarityValue('rare') | number: '1.2-2' }} €</strong></p>
+        </div>
+        
+        <!-- Mythic -->
+        <div class="rarity-stat">
+          <p class="rarity-name">{{ t('mythic') }}:</p>
+          <p>{{ t('cardsOwned') }}: <strong>{{ getRarityOwnedCards('mythic') }}/{{ getRarityTotalCards('mythic') }}</strong></p>
+          <p>{{ t('repeatedCards') }}: <strong>{{ getRarityRepeatedCards('mythic') }}</strong></p>
+          <p>{{ t('estimatedValue') }}: <strong>{{ getRarityValue('mythic') | number: '1.2-2' }} €</strong></p>
+        </div>
+      </div>
     </div>
 
     <div *ngIf="loading" class="status">{{ t('loadingCards') }}</div>
@@ -97,11 +151,14 @@
 
         <div class="filter-item">
           <label>
-            {{ t('printType') }}:
-            <select [(ngModel)]="filterPrint">
-              <option value="all">{{ t('all') }}</option>
-              <option value="hasFoil">{{ t('hasFoil') }}</option>
-              <option value="hasNonFoil">{{ t('hasNonFoil') }}</option>
+            {{ t('sortBy') }}:
+            <select [(ngModel)]="sortBy">
+              <option value="collectorNumber">{{ t('sortCollectorNumber') }}</option>
+              <option value="collectorNumberDesc">{{ t('sortCollectorNumberDesc') }}</option>
+              <option value="nameAsc">{{ t('sortNameAsc') }}</option>
+              <option value="nameDesc">{{ t('sortNameDesc') }}</option>
+              <option value="priceAsc">{{ t('sortPriceAsc') }}</option>
+              <option value="priceDesc">{{ t('sortPriceDesc') }}</option>
             </select>
           </label>
         </div>
@@ -166,7 +223,7 @@
           </p>
 
           <div class="ownership">
-            <div class="field">
+            <div class="field" *ngIf="card.hasNonFoil">
               <label>
                 {{ t('normalCopies') }}:
                 <input
@@ -176,12 +233,14 @@
                   (ngModelChange)="onNormalQtyChange(card.id, $event)"
                 />
               </label>
-              <span *ngIf="!card.hasNonFoil" class="note">
+            </div>
+            <div class="field" *ngIf="!card.hasNonFoil">
+              <span class="note">
                 {{ t('noNonfoil') }}
               </span>
             </div>
 
-            <div class="field">
+            <div class="field" *ngIf="card.hasFoil">
               <label>
                 {{ t('foilCopies') }}:
                 <input
@@ -191,7 +250,9 @@
                   (ngModelChange)="onFoilQtyChange(card.id, $event)"
                 />
               </label>
-              <span *ngIf="!card.hasFoil" class="note">
+            </div>
+            <div class="field" *ngIf="!card.hasFoil">
+              <span class="note">
                 {{ t('noFoil') }}
               </span>
             </div>

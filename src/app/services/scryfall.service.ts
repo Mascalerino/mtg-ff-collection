@@ -19,10 +19,11 @@ export class ScryfallService {
   /**
    * Obtiene todas las cartas del set FINAL FANTASY (código FIN).
    * Maneja la paginación automáticamente para obtener todas las cartas.
+   * @param url - URL opcional para consultar (por defecto usa el set completo)
    * @returns Observable con el array de cartas del set Final Fantasy
    */
-  getFinalFantasyCards(): Observable<MtgCard[]> {
-    const firstPageUrl = `${this.BASE_URL}/cards/search?q=set%3Afin`;
+  getFinalFantasyCards(url?: string): Observable<MtgCard[]> {
+    const firstPageUrl = url || `${this.BASE_URL}/cards/search?q=set:fin&unique=prints`;
 
     return this.fetchAllPages(firstPageUrl).pipe(
       map((cards) => cards.map((c) => this.mapToMtgCard(c)))

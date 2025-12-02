@@ -60,7 +60,7 @@ export class FilterService {
   }
 
   /**
-   * Filtra cartas por término de búsqueda en el nombre.
+   * Filtra cartas por término de búsqueda en el nombre o número de coleccionista.
    * @param cards - Lista de cartas
    * @param searchTerm - Término de búsqueda
    * @returns Cartas que coinciden con el término
@@ -69,7 +69,10 @@ export class FilterService {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return cards;
     
-    return cards.filter((card) => card.name.toLowerCase().includes(term));
+    return cards.filter((card) => 
+      card.name.toLowerCase().includes(term) || 
+      card.collectorNumber.toLowerCase().includes(term)
+    );
   }
 
   /**

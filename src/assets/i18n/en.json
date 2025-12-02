@@ -3,6 +3,8 @@
 
   "totalCards": "Total cards in set",
   "cardsOwned": "Cards owned",
+  "uniqueCards": "Unique cards",
+  "repeatedCards": "Repeated cards",
   "progress": "Progress",
   "estimatedValue": "Estimated collection value",
   "summaryNote": "(Cardmarket prices via Scryfall, only when data is available)",
@@ -15,19 +17,23 @@
   "import": "Import collection (JSON)",
 
   "search": "Search",
-  "searchPlaceholder": "Card name...",
+  "searchPlaceholder": "Card name or number...",
   "rarity": "Rarity",
   "ownership": "Ownership",
-  "printType": "Print Type",
+  "sortBy": "Sort by",
+
+  "sortCollectorNumber": "Card number (↑)",
+  "sortCollectorNumberDesc": "Card number (↓)",
+  "sortNameAsc": "Alphabetical (A-Z)",
+  "sortNameDesc": "Alphabetical (Z-A)",
+  "sortPriceAsc": "Normal price (↑)",
+  "sortPriceDesc": "Normal price (↓)",
 
   "all": "All",
   "owned": "Owned only",
   "missing": "Missing only",
   "foilOwned": "Owned foils only",
   "wanted": "Wanted only",
-
-  "hasFoil": "Foil only",
-  "hasNonFoil": "Nonfoil only",
 
   "normalCopies": "Normal copies",
   "foilCopies": "Foil copies",
@@ -40,5 +46,21 @@
   "noImage": "No image",
   "viewOnCardmarketTitle": "View this card on Cardmarket",
 
-  "languageLabel": "Idioma / Language:"
+  "setLabel": "Set:",
+  "setUnique": "Unique",
+  "setComplete": "Complete",
+
+  "languageLabel": "Idioma / Language:",
+
+  "totalCardsInFilter": "Total cards in filter",
+  "cardsOwnedInFilter": "Cards owned (filtered)",
+  "progressInFilter": "Progress (filtered)",
+  "estimatedValueInFilter": "Estimated value (filtered)",
+  "estimatedValueTotal": "Total estimated value",
+
+  "rarityStats": "Statistics by rarity",
+  "common": "Common",
+  "uncommon": "Uncommon",
+  "rare": "Rare",
+  "mythic": "Mythic"
 }

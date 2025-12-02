@@ -4,23 +4,49 @@ A web application built with Angular 19 to track and manage your Magic: The Gath
 
 ## Features
 
+### Set Selection
+- **Unique Set**: View only unique cards (one printing per card) using English language versions
+- **Complete Set**: View all printings and variations of cards in the set
+- **Persistent Preference**: Your set type selection is saved and restored automatically
+
 ### Collection Management
-- **Complete Set Overview**: View all 313 cards from the MTG Final Fantasy set
+- **Complete Set Overview**: View all cards from the MTG Final Fantasy set (313 in complete mode, fewer in unique mode)
 - **Card Tracking**: Track both normal and foil versions of each card
 - **Wishlist System**: Mark cards you want to acquire with a star system
 - **Collection Progress**: Real-time statistics showing total cards owned and completion percentage
 - **Estimated Value**: View the estimated value of your collection based on Cardmarket prices via Scryfall
+- **Smart Card Display**: Input fields for foil/non-foil are automatically hidden when a version doesn't exist
 
-### Advanced Filtering
-- **Search by Name**: Quickly find cards by typing their name
+### Advanced Statistics
+- **General Statistics**: 
+  - Total cards in the set
+  - Cards owned (unique cards)
+  - Repeated cards count
+  - Collection completion percentage
+  - Total estimated value
+  
+- **Rarity Breakdown**:
+  - Statistics for each rarity tier (Common, Uncommon, Rare, Mythic)
+  - Cards owned vs total cards per rarity (e.g., "36/78")
+  - Repeated cards count per rarity
+  - Estimated value per rarity
+
+- **Filtered Statistics**: When filters are active, see statistics for the filtered subset
+
+### Advanced Filtering & Sorting
+- **Search**: Find cards by name or collector number
 - **Filter by Rarity**: Common, Uncommon, Rare, or Mythic
 - **Filter by Ownership**: View only owned cards, missing cards, foil-owned cards, or wishlist cards
-- **Filter by Print Type**: Show only cards with foil or non-foil versions available
+- **Multiple Sorting Options**:
+  - Collector number (ascending/descending)
+  - Alphabetical by name (A-Z / Z-A)
+  - Price (ascending/descending)
 
 ### Data Management
 - **Export Collection**: Save your collection data as a JSON file for backup
 - **Import Collection**: Restore your collection from a previously exported JSON file
 - **Persistent Storage**: Your collection is automatically saved to browser's local storage
+- **Persistent Preferences**: Language and set type preferences are saved
 
 ### User Interface
 - **Bilingual Support**: Switch between Spanish and English languages
@@ -96,14 +122,39 @@ npm test
 ```
 src/
 ├── app/
-│   ├── models/          # Data models (MTG Card, Scryfall types)
-│   ├── services/        # API services (Scryfall, Collection)
-│   ├── app.component.*  # Main application component
-│   └── app.config.ts    # Application configuration
+│   ├── models/              # Data models (MTG Card, Scryfall types)
+│   ├── services/            # Services for API, collection, translations, and filtering
+│   │   ├── scryfall.service.ts      # Scryfall API integration
+│   │   ├── collection.service.ts    # Collection management and localStorage
+│   │   ├── translation.service.ts   # i18n management
+│   │   └── filter.service.ts        # Card filtering logic
+│   ├── helpers/             # Utility functions
+│   │   ├── file.helper.ts           # File operations (export/import)
+│   │   └── url.helper.ts            # URL generation for Cardmarket
+│   ├── app.component.*      # Main application component
+│   └── app.config.ts        # Application configuration
 ├── assets/
-│   └── i18n/           # Translation files (es.json, en.json)
-└── styles.scss         # Global styles
+│   └── i18n/               # Translation files (es.json, en.json)
+└── styles.scss             # Global styles
 ```
+
+## API Endpoints
+
+The application uses two different Scryfall API endpoints depending on the set type:
+
+- **Unique Set**: `https://api.scryfall.com/cards/search?q=set:fin+lang:en`
+  - Returns unique cards (one printing per card) in English
+  
+- **Complete Set**: `https://api.scryfall.com/cards/search?q=set:fin&unique=prints`
+  - Returns all printings and variations of cards in the set
+
+## Local Storage
+
+The application stores the following data in browser's localStorage:
+
+- `mtg-collection`: Your card collection data (quantities, wishlist)
+- `mtg-language`: Your language preference ('es' or 'en')
+- `mtg-setType`: Your set type preference ('unique' or 'complete')
 
 ## License
 

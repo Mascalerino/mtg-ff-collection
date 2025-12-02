@@ -3,6 +3,8 @@
 
   "totalCards": "Total cartas en el set",
   "cardsOwned": "Cartas que tienes",
+  "uniqueCards": "Cartas únicas",
+  "repeatedCards": "Cartas repetidas",
   "progress": "Progreso",
   "estimatedValue": "Valor estimado colección",
   "summaryNote": "(Precios Cardmarket vía Scryfall, sólo si hay datos)",
@@ -15,19 +17,23 @@
   "import": "Importar colección (JSON)",
 
   "search": "Buscar",
-  "searchPlaceholder": "Nombre de la carta...",
+  "searchPlaceholder": "Nombre o número de carta...",
   "rarity": "Rareza",
   "ownership": "Propiedad",
-  "printType": "Foil / Nonfoil",
+  "sortBy": "Ordenar por",
+
+  "sortCollectorNumber": "Número de carta (↑)",
+  "sortCollectorNumberDesc": "Número de carta (↓)",
+  "sortNameAsc": "Orden alfabético (A-Z)",
+  "sortNameDesc": "Orden alfabético (Z-A)",
+  "sortPriceAsc": "Precio normal (↑)",
+  "sortPriceDesc": "Precio normal (↓)",
 
   "all": "Todas",
   "owned": "Sólo cartas que poseo",
   "missing": "Sólo cartas que me faltan",
   "foilOwned": "Sólo foils que poseo",
   "wanted": "Sólo cartas deseadas",
-
-  "hasFoil": "Sólo cartas con versión foil",
-  "hasNonFoil": "Sólo cartas con versión normal",
 
   "normalCopies": "Normales",
   "foilCopies": "Foils",
@@ -40,5 +46,21 @@
   "noImage": "Sin imagen",
   "viewOnCardmarketTitle": "Ver esta carta en Cardmarket",
 
-  "languageLabel": "Idioma / Language:"
+  "setLabel": "Set:",
+  "setUnique": "Único",
+  "setComplete": "Completo",
+
+  "languageLabel": "Idioma / Language:",
+
+  "totalCardsInFilter": "Total cartas en el filtro",
+  "cardsOwnedInFilter": "Cartas que tienes (filtradas)",
+  "progressInFilter": "Progreso (filtrado)",
+  "estimatedValueInFilter": "Valor estimado (filtrado)",
+  "estimatedValueTotal": "Valor estimado total",
+
+  "rarityStats": "Estadísticas por rareza",
+  "common": "Common",
+  "uncommon": "Uncommon",
+  "rare": "Rare",
+  "mythic": "Mythic"
 }
